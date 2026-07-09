@@ -6,9 +6,10 @@
     <title>Nummi Racing - Amateur Endurance Racing Team</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css?v=3.7">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.cdnfonts.com/css/vag-rounded" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <link href="https://fonts.cdnfonts.com/css/vag-rounded" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"><link href="https://fonts.cdnfonts.com/css/vag-rounded" rel="stylesheet"></noscript>
     
     <!-- Hotjar Tracking Code for Site 6501565 (name missing) -->
     <script>
@@ -29,6 +30,8 @@
             <h1 class="splash-text">Welcome to</h1>
         </div>
     </div>
+
+    <div class="top-accent-line"></div>
 
     <!-- Navigation -->
     <nav class="navbar">
@@ -58,15 +61,18 @@
 
     <!-- Hero Section -->
     <section id="home" class="hero">
-        <div class="hero-content">
-                    <img src="images/nummi.png" alt="Nummi Racing" class="hero-logo">
-        </div>
-        <div class="hero-background"></div>
+    <div class="parallax-viewport">
+        <img src="images/hero-bg2-web.jpg" class="hero-background" alt="Hero Background Image">
+    </div>
+
+    <div class="hero-content">
+        <img src="images/nummi.png" alt="Nummi Racing" class="hero-logo" fetchpriority="high">
+    </div>
     </section>
 
     <!-- Countdown Section -->
     <section id="countdown" class="countdown-section">
-        <div class="container">
+        <div class="container" style="display: none !important;">
             <h2>Upcoming Races</h2>
             <div class="countdown-container">
                 <!-- Race 1 Countdown -->
@@ -145,18 +151,22 @@
                     <p>Add to the mix Patrick's co-worker at GM, Hung Nguyen who had previously competed in Ontario 1500 (an event that Vinh was also crewing at) and the grassroots amateur GM x Toyota collab was born. Harken back to the OG GMxToyota collab: New United Motor Manufacturing (a plant that is now used by Tesla) and that the team was using Mann Motorsports' car…. NUMMI or new united Mann Motorsports International was born.</p>
                 </div>
                 <div class="about-image">
-                    <img src="images/team-photo.jpg" alt="Nummi Racing Team" id="team-photo">
+                    <img src="images/team-photo.jpg" alt="Nummi Racing Team" id="team-photo" loading="lazy">
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Team Movie Section -->
-    <section id="highlights" class="video-section">
-        <div class="container">
-            <h2>Our Story</h2>
-            <p>Experience the journey of Nummi Racing through the lens of <a href="https://www.instagram.com/octanevision/" target="_blank" class="instagram-link"><i class="fab fa-instagram"></i>@octanevision</a></p>
-            <div class="video-container">
+    <section id="highlights" class="video-parallax-section">
+    <div class="video-parallax-viewport">
+        <div class="video-parallax-bg"></div>
+    </div>
+
+    <div class="video-glass-card">
+        <div class="video-content-layout">
+            
+            <div class="iframe-player-container">
                 <iframe 
                     src="https://www.youtube.com/embed/swgQvlwt8AI" 
                     title="Nummi Racing Team Movie"
@@ -165,12 +175,19 @@
                     allowfullscreen>
                 </iframe>
             </div>
+            
+            <div class="video-text-container">
+                <h2>Our Story</h2>
+                <p>Experience the journey of Nummi Racing through the lens of &nbsp; <a href="https://www.instagram.com/octanevision/" target="_blank" class="instagram-link"><i class="fab fa-instagram"></i>@octanevision</a></p>
+            </div>
         </div>
+    </div>
     </section>
 
     <!-- Crew Section -->
     <section id="crew" class="crew-section">
         <div class="container">
+            <h3><br></h3>
             <h2>Our Crew</h2>
             <div class="crew-grid" id="crew-grid">
                 <!-- Crew will be populated by JavaScript -->
@@ -187,68 +204,71 @@
             </div>
         </div>
     </section>
+    
 
     <!-- The Car Section -->
-    <section id="car" class="car-section">
-        <div class="container">
-            <h2>The Car</h2>
-            <div class="car-content">
-                <div class="car-details">
-                    <h3>Toyota 86</h3>
-                    <div class="car-specs">
-                        <div class="spec-item">
-                            <span class="spec-label">Engine:</span>
-                            <span class="spec-value">2.4L naturally aspirated boxer 4 cylinder; FA24</span>
-                        </div>
-                        <div class="spec-item">
-                            <span class="spec-label">Horsepower:</span>
-                            <span class="spec-value">200hp</span>
-                        </div>
-                        <div class="spec-item">
-                            <span class="spec-label">ECU:</span>
-                            <span class="spec-value">LINK ECU G5</span>
-                        </div>
-                        <div class="spec-item">
-                            <span class="spec-label">Tire:</span>
-                            <span class="spec-value">Continental Extremecontact Force</span>
-                        </div>
-                        <div class="spec-item">
-                            <span class="spec-label">Front Tire Size:</span>
-                            <span class="spec-value">255/45R17</span>
-                        </div>
-                        <div class="spec-item">
-                            <span class="spec-label">Rear Tire Size:</span>
-                            <span class="spec-value">255/45R17</span>
-                        </div>
-                        <div class="spec-item">
-                            <span class="spec-label">Suspension:</span>
-                            <span class="spec-value">MCS Motion Control Suspension 2Way</span>
-                        </div>
-                        <div class="spec-item">
-                            <span class="spec-label">Brakes:</span>
-                            <span class="spec-value">AP Racing</span>
-                        </div>
-                        <div class="spec-item">
-                            <span class="spec-label">Oil Pan:</span>
-                            <span class="spec-value">Formula Delta</span>
-                        </div>
-                        <div class="spec-item">
-                            <span class="spec-label">Curb Weight:</span>
-                            <span class="spec-value">Very Light</span>
-                        </div>
+    <section id="car" class="car-parallax-section">
+    <div class="car-parallax-viewport">
+        <div class="car-parallax-bg"></div>
+    </div>
+
+    <div class="car-glass-card">
+        <h2>The Car</h2>
+        <div class="car-content">
+            <div class="car-details">
+                <h3>Toyota 86</h3>
+                <div class="car-specs">
+                    <div class="spec-item">
+                        <span class="spec-label">Engine:</span>
+                        <span class="spec-value">2.4L naturally aspirated boxer 4 cylinder; FA24</span>
                     </div>
-    
-                </div>
-                <div class="car-gallery">
-                    <img src="images/car-main.jpg" alt="Nummi Racing Toyota 86" id="car-main-image">
-                    <div class="car-thumbnails" id="car-thumbnails">
-                        <!-- Car thumbnails will be populated by JavaScript -->
+                    <div class="spec-item">
+                        <span class="spec-label">Horsepower:</span>
+                        <span class="spec-value">200hp</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">ECU:</span>
+                        <span class="spec-value">LINK ECU G5</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Tire:</span>
+                        <span class="spec-value">Continental Extremecontact Force</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Front Tire Size:</span>
+                        <span class="spec-value">255/45R17</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Rear Tire Size:</span>
+                        <span class="spec-value">255/45R17</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Suspension:</span>
+                        <span class="spec-value">MCS Motion Control Suspension 2Way</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Brakes:</span>
+                        <span class="spec-value">AP Racing</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Oil Pan:</span>
+                        <span class="spec-value">Formula Delta</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Curb Weight:</span>
+                        <span class="spec-value">Very Light</span>
                     </div>
                 </div>
             </div>
+            <div class="car-gallery">
+                <img src="images/car-main.jpg" alt="Nummi Racing Toyota 86" id="car-main-image" loading="lazy">
+                <div class="car-thumbnails" id="car-thumbnails">
+                    </div>
+            </div>
         </div>
+    </div>
     </section>
-
+    
     <!-- Schedule Section -->
     <section id="schedule" class="schedule-section">
         <div class="container">
@@ -281,39 +301,147 @@
         </div>
     </section>
 
+    
+    
     <!-- Results Section -->
     <section id="results" class="results-section">
-        <div class="container">
-            <h2>Results</h2>
-            <div class="results-content">
-                <div class="results-overview">
-                    <div class="digital-stats">
-                        <div class="stat-line">
-                            <span class="counter-number" data-target="1">0</span>
-                            <span class="counter-label">Championship Win</span>
-                        </div>
-                        <div class="stat-line">
-                            <span class="counter-number" data-target="5">0</span>
-                            <span class="counter-label">Race Wins</span>
-                        </div>
-                        <div class="stat-line">
-                            <span class="counter-number" data-target="16">0</span>
-                            <span class="counter-label">Podiums</span>
-                        </div>
-                        <div class="stat-line">
-                            <span class="counter-number" data-target="250">0</span>
-                            <span class="counter-label">Hours Racing</span>
-                        </div>
-                        <div class="stat-line">
-                            <span class="counter-number" data-target="33">0</span>
-                            <span class="counter-label">Endurance Races</span>
-                        </div>
+        <div class="parallax-bg" style="background-image: url('images/DI.jpg'); position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; background-size: cover; background-position: center; background-attachment: fixed;"></div>            <h2>Results</h2>
+        
+        <div class="container" style="position: relative; z-index: 10;">
+    <div class="results-content">
+        <div class="results-overview">
+            <div class="premium-glass-card">
+                
+                <h2 class="section-title">Results</h2>
+                
+                <div class="digital-stats">
+                    <div class="stat-line">
+                        <span class="counter-number" data-target="1">0</span>
+                        <span class="counter-label">Championship Win</span>
+                    </div>
+                    <div class="stat-line">
+                        <span class="counter-number" data-target="5">0</span>
+                        <span class="counter-label">Race Wins</span>
+                    </div>
+                    <div class="stat-line">
+                        <span class="counter-number" data-target="16">0</span>
+                        <span class="counter-label">Podiums</span>
+                    </div>
+                    <div class="stat-line">
+                        <span class="counter-number" data-target="250">0</span>
+                        <span class="counter-label">Hours Racing</span>
+                    </div>
+                    <div class="stat-line">
+                        <span class="counter-number" data-target="33">0</span>
+                        <span class="counter-label">Endurance Races</span>
                     </div>
                 </div>
+            </div> </div>
+
+                <div class="digital-stats" style="margin-top: 50px; margin-bottom: 50px;">
+                </div>
+                
 
                 <div class="results-container">
+                    
+                    <div class="season-divider"></div>
+
+                    <details class="season" open>
+                        <summary><h3>2026 Championship</span><span class="season-dash"> - </span><span class="season-position silver">TBD</span></h3></summary>
+                        <div class="race-content">
+                    
                     <div class="season">
-                        <h3><span class="season-year">2024 GT1 Championship</span><span class="season-dash"> - </span><span class="season-position bronze">3rd</span></h3>
+                        <div class="results-grid">
+                            <div class="result-card">
+                                <div class="track-name">Shannonville</div>
+                                <div class="track-map">
+                                    <canvas class="track-canvas" width="400" height="300" data-track="smp-long" data-lap-time="1.20"></canvas>
+                                </div>
+                                <div class="race-position p3">P3</div>
+                                <div class="race-number">Race 1</div>
+                            </div>
+                            
+                            <div class="result-card">
+                                <div class="track-name">Shannonville</div>
+                                <div class="track-map">
+                                    <canvas class="track-canvas" width="400" height="300" data-track="smp-long" data-lap-time="1.19"></canvas>
+                                </div>
+                                <div class="race-position p4">P4</div>
+                                <div class="race-number">Race 2</div>
+                            </div>
+                            
+                            <div class="result-card">
+                                <div class="track-name">Shannonville </div>
+                                <div class="track-map">
+                                    <canvas class="track-canvas" width="400" height="300" data-track="smp-long" data-lap-time="1.42"></canvas>
+                                </div>
+                                <div class="race-position p2">P2</div>
+                                <div class="race-number">Race 3</div>
+                            </div>
+                            
+                            <div class="result-card">
+                                <div class="track-name">Shannonville </div>
+                                <div class="track-map">
+                                    <canvas class="track-canvas" width="400" height="300" data-track="smp-long" data-lap-time="1.40"></canvas>
+                                </div>
+                                <div class="race-position p1">P1</div>
+                                <div class="race-number">Race 4</div>
+                            </div>
+                            
+                            <div class="result-card">
+                                <div class="track-name">Calabogie</div>
+                                <div class="track-map">
+                                    <canvas class="track-canvas" width="400" height="300" data-track="calabogie" data-lap-time="1.17"></canvas>
+                                </div>
+                                <div class="race-position p1">P1</div>
+                                <div class="race-number">Race 5</div>
+                            </div>
+                            
+                             <div class="result-card">
+                                <div class="track-name">Calabogie</div>
+                                <div class="track-map">
+                                    <canvas class="track-canvas" width="400" height="300" data-track="calabogie" data-lap-time="1.17"></canvas>
+                                </div>
+                                <div class="race-position p4">P4</div>
+                                <div class="race-number">Race 6</div>
+                            </div>
+
+                             <div class="result-card">
+                                <div class="track-name">Calabogie</div>
+                                <div class="track-map">
+                                    <canvas class="track-canvas" width="400" height="300" data-track="calabogie" data-lap-time="1.17"></canvas>
+                                </div>
+                                <div class="race-position dnf">DNF</div>
+                                <div class="race-number">Race 7</div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="track-name">Mosport GP</div>
+                                <div class="track-map">
+                                    <canvas class="track-canvas" width="400" height="300" data-track="mosport" data-lap-time="1.24"></canvas>
+                                </div>
+                                <div class="race-position p1">P1</div>
+                                <div class="race-number">Race 8</div>
+                            </div>
+
+                            <div class="result-card">
+                                <div class="track-name">Mosport GP</div>
+                                <div class="track-map">
+                                    <canvas class="track-canvas" width="400" height="300" data-track="mosport" data-lap-time="1.24"></canvas>
+                                </div>
+                                <div class="race-position dnf">DNF</div>
+                                <div class="race-number">Race 9</div>
+                            </div>                
+                        </div>
+
+                        </div>
+                        </details>
+                    
+                    <details class="season">
+                        <summary><h3>2024 GT1 Championship</span><span class="season-dash"> - </span><span class="season-position bronze">3rd</span></h3></summary>
+                        <div class="race-content">
+                    
+                            <div class="season">
                         <div class="results-grid">
                             <div class="result-card">
                                 <div class="track-name">Mosport GP</div>
@@ -397,11 +525,18 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="season-divider"></div>
 
+                    </div>
+                    </details>
+
+
+                    <details class="season">
+                        <summary><h3>2023 GT1 Championship</span><span class="season-dash"> - </span><span class="season-position gold">1st</span></h3></summary>
+                        <div class="race-content">
+                    
                     <div class="season">
-                        <h3><span class="season-year">2023 GT1 Championship</span><span class="season-dash"> - </span><span class="season-position gold">1st</span></h3>
                         <div class="results-grid">
                             <div class="result-card">
                                 <div class="track-name">Shannonville</div>
@@ -486,10 +621,16 @@
                         </div>
                     </div>
 
+                    </div>
+                    </details>
+
                     <div class="season-divider"></div>
 
+                    <details class="season">
+                        <summary><h3>2022 GT1 Championship</span><span class="season-dash"> - </span><span class="season-position bronze">3rd</span></h3></summary>
+                        <div class="race-content">
+
                     <div class="season">
-                        <h3><span class="season-year">2022 GT1 Championship</span><span class="season-dash"> - </span><span class="season-position bronze">3rd</span></h3>
                         <div class="results-grid">
                             <div class="result-card">
                                 <div class="track-name">Mosport GP</div>
@@ -574,10 +715,16 @@
                         </div>
                     </div>
 
+                    </div>
+                    </details>
+
                     <div class="season-divider"></div>
 
+                    <details class="season">
+                        <summary><h3>2021 GT2 Championship</span><span class="season-dash"> - </span><span class="season-position silver">2nd</span></h3></summary>
+                        <div class="race-content">
+
                     <div class="season">
-                        <h3><span class="season-year">2021 GT2 Championship</span><span class="season-dash"> - </span><span class="season-position silver">2nd</span></h3>
                         <div class="results-grid">
                             <div class="result-card">
                                 <div class="track-name">Calabogie GT2</div>
@@ -634,6 +781,11 @@
                             </div>
                         </div>
                     </div>
+
+                    </div>
+                    </details>
+
+                </div>
                 </div>
             </div>
         </div>
@@ -716,14 +868,14 @@
                 </a>
             </div>
         </div>
+       
     </section>
-
-
-
-
-
-
+    <div class="credit-banner">
+    <p>Website made by <a href="https://github.com/Patrick-Lahoud" target="_blank" rel="noopener">Patrick Lahoud</a></p>
+</div>
 
     <script src="script.js?v=3.6"></script>
+
+ 
 </body>
 </html>

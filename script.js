@@ -166,32 +166,8 @@ function loadDefaultData() {
             },
             {
                 id: 2,
-                name: "Joseph Yang",
-                role: "Race Engineer",
-                image: "images/joseph.jpg",
-                bio: "",
-                instagram: "jsph.yang"
-            },
-            {
-                id: 3,
-                name: "Amando Widjaja",
-                role: "Race Strategy",
-                image: "images/amando_web.jpg",
-                bio: "",
-                instagram: "amandowidjaja"
-            },
-            {
-                id: 4,
-                name: "Manitha Chandrasena",
-                role: "Systems Engineer",
-                image: "images/manitha.jpg",
-                bio: "",
-                instagram: "manitha_c"
-            },
-            {
-                id: 5,
                 name: "Luke Pham",
-                role: "Crew",
+                role: "Logistics Manager",
                 image: "images/luke.jpg",
                 bio: "",
                 instagram: "lukephamracing"
@@ -222,7 +198,7 @@ function loadDefaultData() {
                 id: 1,
                 name: "BSQUARED",
                 logo: "images/bsquared.png",
-                website: "https://b-squared.io"
+                website: "https://trybsquared.com/"
             },
             {
                 id: 2,
@@ -239,7 +215,7 @@ function loadDefaultData() {
             {
                 id: 4,
                 name: "VP Engineering & Electrical",
-                logo: "images/vpsponsor.png",
+                logo: "images/vpsponsor_web.png",
                 website: "https://www.instagram.com/vphamracing/"
             },
             {
@@ -630,7 +606,7 @@ function renderDrivers() {
         <div class="driver-card fade-in" data-driver="${driver.name.toLowerCase()}">
             <div class="flip-card">
                 <div class="flip-card-front">
-                    <img src="${driver.image}" alt="${driver.name}" class="driver-image" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><rect width=%22200%22 height=%22200%22 fill=%22%237A9292%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22>No Image</text></svg>';">
+                    <img src="${driver.image}" alt="${driver.name}" class="driver-image" loading="lazy" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><rect width=%22200%22 height=%22200%22 fill=%22%237A9292%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22>No Image</text></svg>';">
                     <div class="driver-info-front">
                         <h3 class="driver-name">${driver.name}</h3>
                         <p class="driver-role">${driver.role}</p>
@@ -638,7 +614,7 @@ function renderDrivers() {
                 </div>
                 <div class="flip-card-back">
                     <div class="back-top-content">
-                        <img src="${driver.image}" alt="${driver.name}" class="driver-image-small" data-driver="${driver.name.toLowerCase()}" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%237A9292%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2212%22>No Image</text></svg>';">
+                        <img src="${driver.image}" alt="${driver.name}" class="driver-image-small" loading="lazy" data-driver="${driver.name.toLowerCase()}" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%237A9292%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2212%22>No Image</text></svg>';">
                         <h3 class="driver-name">${driver.name}</h3>
                     </div>
                     <div class="back-content-area">
@@ -668,7 +644,7 @@ function renderCrew() {
         <div class="crew-card fade-in" data-crew="${member.name.toLowerCase()}">
             <div class="flip-card">
                 <div class="flip-card-front">
-                    <img src="${member.image}" alt="${member.name}" class="crew-image" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><rect width=%22200%22 height=%22200%22 fill=%22%237A9292%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22>No Image</text></svg>';">
+                    <img src="${member.image}" alt="${member.name}" class="crew-image" loading="lazy" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22><rect width=%22200%22 height=%22200%22 fill=%22%237A9292%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22>No Image</text></svg>';">
                     <div class="crew-info-front">
                         <h3 class="crew-name">${member.name}</h3>
                         <p class="crew-role">${member.role}</p>
@@ -676,7 +652,7 @@ function renderCrew() {
                 </div>
                 <div class="flip-card-back">
                     <div class="back-top-content">
-                        <img src="${member.image}" alt="${member.name}" class="crew-image-small" data-crew="${member.name.toLowerCase()}" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%237A9292%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2212%22>No Image</text></svg>';">
+                        <img src="${member.image}" alt="${member.name}" class="crew-image-small" loading="lazy" data-crew="${member.name.toLowerCase()}" onerror="this.onerror=null; this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%237A9292%22/><text x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2212%22>No Image</text></svg>';">
                         <h3 class="crew-name">${member.name}</h3>
                     </div>
                     <div class="back-content-area">
@@ -734,7 +710,7 @@ function renderGallery() {
     
     galleryGrid.innerHTML = websiteData.gallery.map(item => `
         <div class="gallery-item fade-in" data-race="${item.race}">
-            <img src="${item.image}" alt="Gallery Image" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <img src="${item.image}" alt="Gallery Image" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <div class="gallery-overlay">
                 <p>${item.caption}</p>
             </div>
@@ -749,7 +725,7 @@ function renderMerch() {
     
     merchGrid.innerHTML = websiteData.merch.map(item => `
         <div class="merch-item fade-in">
-            <img src="${item.image}" alt="${item.name}" class="merch-image" onerror="this.style.display='none'; this.parentElement.querySelector('.merch-info').style.marginTop='20px';">
+            <img src="${item.image}" alt="${item.name}" class="merch-image" loading="lazy" onerror="this.style.display='none'; this.parentElement.querySelector('.merch-info').style.marginTop='20px';">
             <div class="merch-info">
                 <h3 class="merch-name">${item.name}</h3>
                 <p class="merch-price">${item.price}</p>
@@ -767,7 +743,7 @@ function renderSponsors() {
     
     sponsorsGrid.innerHTML = websiteData.sponsors.map(sponsor => `
         <a href="${sponsor.website}" class="sponsor-item fade-in" target="_blank" rel="noopener">
-            <img src="${sponsor.logo}" alt="${sponsor.name}" class="sponsor-logo" onerror="this.style.display='none'; this.nextElementSibling.style.marginTop='10px';">
+            <img src="${sponsor.logo}" alt="${sponsor.name}" class="sponsor-logo" loading="lazy" onerror="this.style.display='none'; this.nextElementSibling.style.marginTop='10px';">
         </a>
     `).join('');
 }
@@ -797,6 +773,13 @@ function startCountdown() {
     
     // Race 2: NASA 25hrs of Ozarks - November 15, 2025 at 11:00 AM CT
     const race2Date = new Date('2025-11-15T17:00:00Z').getTime(); // 11:00 AM CT = 5:00 PM UTC
+    
+    const now = Date.now();
+    if (race1Date < now && race2Date < now) {
+        document.getElementById('countdown-race1').innerHTML = '<h3>Race Complete!</h3>';
+        document.getElementById('countdown-race2').innerHTML = '<h3>Race Complete!</h3>';
+        return;
+    }
     
     const countdown = setInterval(() => {
         const now = new Date().getTime();
@@ -1453,6 +1436,9 @@ function initializeTrackCanvases() {
                 console.warn(`No coordinates found for track type: ${trackType}`);
             }
         });
+        
+        // Set up IntersectionObserver to pause/resume animations based on visibility
+        setupCanvasVisibilityObserver();
     }).catch(error => {
         console.error('Error loading track coordinates:', error);
         // Fallback to existing coordinates only
@@ -1465,6 +1451,28 @@ function initializeTrackCanvases() {
                 drawTrackOnCanvas(canvas, coordinates);
             }
         });
+        
+        setupCanvasVisibilityObserver();
+    });
+}
+
+// Pause/resume canvas animations based on visibility
+function setupCanvasVisibilityObserver() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const canvas = entry.target;
+            if (entry.isIntersecting) {
+                if (!canvas.animationId && canvas._animData) {
+                    startTrackAnimation(canvas);
+                }
+            } else {
+                stopTrackAnimation(canvas);
+            }
+        });
+    }, { threshold: 0, rootMargin: '100px' });
+    
+    document.querySelectorAll('.track-canvas').forEach(canvas => {
+        observer.observe(canvas);
     });
 }
 
@@ -1663,13 +1671,16 @@ function drawTrackOnCanvas(canvas, coordinates) {
         }
     }
     
-    // Start the moving dot animation
-    startTrackAnimation(canvas, coordinates, minLat, minLng, maxLat, maxLng, scale, offsetX, offsetY, width, height);
+    // Store animation data on canvas for later use by IntersectionObserver
+    canvas._animData = { coordinates, minLat, minLng, maxLat, maxLng, scale, offsetX, offsetY, width, height };
 }
 
 // Animation function for moving dot on track
-function startTrackAnimation(canvas, coordinates, minLat, minLng, maxLat, maxLng, scale, offsetX, offsetY, width, height) {
-    if (!coordinates || coordinates.length < 2) return;
+function startTrackAnimation(canvas) {
+    const data = canvas._animData;
+    if (!data || !data.coordinates || data.coordinates.length < 2) return;
+    
+    const { coordinates, minLat, minLng, maxLat, maxLng, scale, offsetX, offsetY, width, height } = data;
     
     // Stop any existing animation
     if (canvas.animationId) {
@@ -1684,124 +1695,112 @@ function startTrackAnimation(canvas, coordinates, minLat, minLng, maxLat, maxLng
         'mosport': 95,      // 1:35
         'calabogie': 145,   // 2:25
         'smp-long': 118,    // 1:58
-                            'smp-pro': 75       // 1:15
+        'smp-pro': 75       // 1:15
     };
     
     const lapTimeSeconds = lapTimes[trackType] || 30;
     const dotRadius = 5;
     
-    // Calculate total track distance in pixels and segment distances
-    let totalDistance = 0;
-    const segmentDistances = [];
-    const canvasCoordinates = [];
-    
-    // Convert all coordinates to canvas coordinates and calculate distances
-    for (let i = 0; i < coordinates.length; i++) {
-        const coord = coordinates[i];
-        const canvasX = (coord[0] - minLng) * scale + offsetX;
-        const canvasY = height - ((coord[1] - minLat) * scale + offsetY);
-        canvasCoordinates.push({ x: canvasX, y: canvasY });
+    // Calculate total track distance in pixels and segment distances (cache on first run)
+    if (!canvas._animDistance) {
+        let totalDistance = 0;
+        const segmentDistances = [];
+        const canvasCoordinates = [];
         
-        if (i > 0) {
-            const prevCoord = canvasCoordinates[i - 1];
-            const distance = Math.sqrt(
-                Math.pow(canvasX - prevCoord.x, 2) + 
-                Math.pow(canvasY - prevCoord.y, 2)
-            );
-            segmentDistances.push(distance);
-            totalDistance += distance;
+        for (let i = 0; i < coordinates.length; i++) {
+            const coord = coordinates[i];
+            const canvasX = (coord[0] - minLng) * scale + offsetX;
+            const canvasY = height - ((coord[1] - minLat) * scale + offsetY);
+            canvasCoordinates.push({ x: canvasX, y: canvasY });
+            
+            if (i > 0) {
+                const prevCoord = canvasCoordinates[i - 1];
+                const distance = Math.sqrt(
+                    Math.pow(canvasX - prevCoord.x, 2) + 
+                    Math.pow(canvasY - prevCoord.y, 2)
+                );
+                segmentDistances.push(distance);
+                totalDistance += distance;
+            }
         }
+        
+        const lastToFirst = Math.sqrt(
+            Math.pow(canvasCoordinates[0].x - canvasCoordinates[canvasCoordinates.length - 1].x, 2) + 
+            Math.pow(canvasCoordinates[0].y - canvasCoordinates[canvasCoordinates.length - 1].y, 2)
+        );
+        segmentDistances.push(lastToFirst);
+        totalDistance += lastToFirst;
+        
+        canvas._animDistance = { totalDistance, segmentDistances, canvasCoordinates, lapTimeSeconds };
     }
     
-    // Add distance from last point back to first to complete the loop
-    const lastToFirst = Math.sqrt(
-        Math.pow(canvasCoordinates[0].x - canvasCoordinates[canvasCoordinates.length - 1].x, 2) + 
-        Math.pow(canvasCoordinates[0].y - canvasCoordinates[canvasCoordinates.length - 1].y, 2)
-    );
-    segmentDistances.push(lastToFirst);
-    totalDistance += lastToFirst;
+    const { totalDistance, segmentDistances, canvasCoordinates } = canvas._animDistance;
+    console.log(`${trackType}: Lap time ${lapTimeSeconds}s, total distance: ${totalDistance.toFixed(2)}px`);
     
-    // Speed in pixels per frame (60 fps) - make it slower for smoother animation
-    const pixelsPerFrame = totalDistance / (lapTimeSeconds * 60);
-    
-    console.log(`${trackType}: Lap time ${lapTimeSeconds}s, total distance: ${totalDistance.toFixed(2)}px, speed: ${pixelsPerFrame.toFixed(2)}px/frame`);
-    
-    let currentDistance = 0;
     let lastTime = performance.now();
     
     function animate(currentTime) {
-        // Calculate time-based movement for smooth animation
         const deltaTime = currentTime - lastTime;
         lastTime = currentTime;
         
-        // Speed in pixels per millisecond
         const pixelsPerMs = totalDistance / (lapTimeSeconds * 1000);
         const distanceIncrement = pixelsPerMs * deltaTime;
         
-        // Clear previous dot by redrawing the track
         redrawTrack(canvas, coordinates, minLat, minLng, maxLat, maxLng, scale, offsetX, offsetY, width, height);
         
-        // Find current position based on distance traveled
         let accumulatedDistance = 0;
         let currentSegment = 0;
         
-        // Find which segment we're in
         while (currentSegment < segmentDistances.length && 
-               accumulatedDistance + segmentDistances[currentSegment] < currentDistance) {
+               accumulatedDistance + segmentDistances[currentSegment] < canvas._currentDistance) {
             accumulatedDistance += segmentDistances[currentSegment];
             currentSegment++;
         }
         
-        // Handle wrap-around
         if (currentSegment >= segmentDistances.length) {
             currentSegment = 0;
-            currentDistance = 0;
+            canvas._currentDistance = 0;
             accumulatedDistance = 0;
         }
         
-        // Calculate position within current segment
         const segmentProgress = segmentDistances[currentSegment] > 0 ? 
-            (currentDistance - accumulatedDistance) / segmentDistances[currentSegment] : 0;
+            (canvas._currentDistance - accumulatedDistance) / segmentDistances[currentSegment] : 0;
         
-        // Get current and next canvas coordinates
         const currentCoord = canvasCoordinates[currentSegment];
         const nextCoord = canvasCoordinates[(currentSegment + 1) % canvasCoordinates.length];
         
-        // Interpolate position with sub-pixel precision
         const x = currentCoord.x + (nextCoord.x - currentCoord.x) * segmentProgress;
         const y = currentCoord.y + (nextCoord.y - currentCoord.y) * segmentProgress;
         
-        // Draw animated dot
         const ctx = canvas.getContext('2d');
-        ctx.fillStyle = '#ff0000'; // Bright red
+        ctx.fillStyle = '#ff0000';
         ctx.beginPath();
         ctx.arc(x, y, dotRadius, 0, 2 * Math.PI);
         ctx.fill();
         
-        // Add red glow effect
         ctx.shadowColor = '#ff0000';
         ctx.shadowBlur = 10;
         ctx.fill();
         ctx.shadowBlur = 0;
         
-        // Add white border
-        ctx.strokeStyle = '#808080'; // 50% grey
+        ctx.strokeStyle = '#808080';
         ctx.lineWidth = 2;
         ctx.stroke();
         
-        // Update distance traveled based on actual time elapsed
-        currentDistance += distanceIncrement;
+        canvas._currentDistance += distanceIncrement;
         
-        // Reset when completing a lap
-        if (currentDistance >= totalDistance) {
-            currentDistance = 0;
+        if (canvas._currentDistance >= totalDistance) {
+            canvas._currentDistance = 0;
         }
         
-        // Continue animation
         canvas.animationId = requestAnimationFrame(animate);
     }
     
-    // Start the animation
+    // Initialize distance if resuming
+    if (canvas._currentDistance === undefined) {
+        canvas._currentDistance = 0;
+    }
+    
     animate(performance.now());
 }
 
@@ -1941,3 +1940,114 @@ function redrawTrack(canvas, coordinates, minLat, minLng, maxLat, maxLng, scale,
         }
     }
 }
+
+// --- High-Performance Parallax Observer (Speed: 0.8) ---
+// --- Jitter-Free Optimized Parallax Controller ---
+
+// 1. Hero Parallax
+window.addEventListener('scroll', () => {
+    const heroContainer = document.querySelector('.parallax-viewport');
+    if (heroContainer) {
+        requestAnimationFrame(() => {
+            heroContainer.style.transform = `translate3d(0, ${window.scrollY * 0.8}px, 0)`;
+        });
+    }
+}, { passive: true });
+
+// 2. Section Parallax (Highlights, Car, Results)
+const parallaxObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        const targetBg = entry.target.querySelector('.video-parallax-bg, .car-parallax-bg, .results-parallax-bg');
+        if (!targetBg) return;
+
+        if (entry.isIntersecting) {
+            const handleScroll = () => {
+                // Use offsetTop instead of getBoundingClientRect() to avoid layout thrashing
+                const scrollPos = window.scrollY;
+                const sectionTop = entry.target.offsetTop;
+                const relativePos = scrollPos - sectionTop;
+
+                requestAnimationFrame(() => {
+                    if (targetBg.classList.contains('video-parallax-bg')) {
+                        targetBg.style.transform = `translate3d(0, ${relativePos * 0.8}px, 0) scaleX(-1)`;
+                    } else {
+                        targetBg.style.transform = `translate3d(0, ${relativePos * 0.8}px, 0)`;
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            entry.target._parallaxScrollHandler = handleScroll;
+        } else {
+            if (entry.target._parallaxScrollHandler) {
+                window.removeEventListener('scroll', entry.target._parallaxScrollHandler);
+            }
+        }
+    });
+}, { threshold: 0 });
+
+// Observe all your sections
+['highlights', 'car', 'results'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) parallaxObserver.observe(el);
+});
+// --- Cascade Reveal Observer ---
+const cardObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        // If the card scrolls into view, add the visibility class
+        if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            // Stop watching it once it's revealed to save performance
+            cardObserver.unobserve(entry.target); 
+        }
+    });
+}, { threshold: 0.15 }); // Triggers when 15% of the card is visible
+
+// Attach the watcher to every single result card automatically
+document.querySelectorAll('.result-card').forEach(card => {
+    cardObserver.observe(card);
+});
+
+// --- Navbar Glass & Glow Scroll Effect ---
+const navbar = document.querySelector('.navbar');
+
+window.addEventListener('scroll', () => {
+    // If the user scrolls down more than 50 pixels, ignite the brake light navbar
+    if (window.scrollY > 50) {
+        navbar.classList.add('scrolled');
+    } else {
+        // If they scroll back to the absolute top, return to solid dark mode
+        navbar.classList.remove('scrolled');
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    
+    // 1. Auto-Calculate the Delay for ANY amount of cards
+    const allCards = document.querySelectorAll('.result-card');
+    
+    allCards.forEach((card) => {
+        // This dynamically finds the card's exact position (0, 1, 2, 3...) inside its parent container
+        const index = Array.from(card.parentNode.children).indexOf(card);
+        
+        // Applies a 0.1s, 0.2s, etc. delay based on that position
+        card.style.transitionDelay = `${index * 0.1}s`;
+    });
+
+    // 2. The Camera (Observer)
+    const cardObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('show');
+            } else {
+                entry.target.classList.remove('show');
+            }
+        });
+    }, {
+        threshold: 0.1 
+    });
+
+    // 3. Watch the cards
+    allCards.forEach((card) => cardObserver.observe(card));
+    
+});
