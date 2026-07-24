@@ -2874,13 +2874,13 @@ details[open] .race-content {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;        /* Forces it to stretch full width */
-    height: 100%;       /* Forces it to stretch full height */
-    z-index: -1;        /* PUSHES IT BEHIND THE TEXT */
+    width: 100%;        /* Fits the container exactly */
+    height: 100%;       /* Fits the container exactly */
+    z-index: -1;        /* Keeps it behind your text/cards */
     
-    background-size: cover;   /* Ensures the image covers the box without stretching weirdly */
+    background-size: cover;   
     background-position: center;
-    background-attachment: fixed; /* Your parallax scroll effect */
+    background-attachment: fixed !important; /* THE FIX: Pure CSS parallax forced on everywhere */
 }
 
 /* 3. Your Text/Content (Pulled to the front) */
@@ -2974,3 +2974,216 @@ details[open] .race-content {
 .credit-banner a:active {
     outline: none !important;
 }
+
+/* --- Mobile Typography Scaling --- */
+@media (max-width: 768px) {
+    /* Main Hero Title */
+    h1 {
+        font-size: 2.5rem !important; 
+        letter-spacing: 1px !important;
+    }
+
+    /* Section Headers (like "Results", "Connect", "About") */
+    h2, .section-title {
+        font-size: 2rem !important; 
+        margin-bottom: 1.25rem !important;
+    }
+
+    /* Dropdown Headers & Card Titles */
+    h3 {
+        font-size: 1.3rem !important;
+    }
+
+    /* --- Body Text Scaling Added Below --- */
+    p, li, span, label {
+        font-size: 0.95rem !important;  /* Tighter, crisp size for mobile reading */
+        line-height: 1.5 !important;    /* Keeps paragraphs breathing comfortably */
+    }
+
+    summary {
+        padding: 1rem 1.5rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* ... your existing typography styles ... */
+
+    /* 1. Tighten the Results section wrapper spacing */
+    .results-content,
+    .results-overview {
+        padding-bottom: 0 !important;
+        margin-bottom: 0 !important;
+    }
+
+    /* 2. Shrink the massive desktop padding and margin on the glass card itself */
+    .premium-glass-card {
+        padding: 1.5rem 1rem !important; /* Drops down from 2.5rem to look compact */
+        margin-bottom: 0.5rem !important; /* Drastically cuts the dead space below the card */
+    }
+
+    /* 3. If your stats grid has a container pushing things down, flatten it */
+    .digital-stats {
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* ... your other mobile styles ... */
+
+    /* 1. Crush the outer card padding and pull the borders closer */
+    .car-glass-card {
+        padding: 0.85rem !important; /* Aggressively reduced padding */
+        margin: 0 0.25rem !important; 
+    }
+
+    /* 2. Push the text list and image closer together */
+    .car-content {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important; /* Drastically cut down gap */
+        padding: 0 !important;
+    }
+
+    /* 3. Tighten the spec container stack */
+    .car-specs {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0 !important; /* Removes inner gaps entirely */
+    }
+
+    /* 4. Flatten the layout and minimize row heights */
+    .spec-item {
+        display: flex !important;
+        flex-direction: column !important; 
+        align-items: flex-start !important;
+        padding: 0.25rem 0 !important; /* Super thin row padding */
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03); 
+    }
+
+    /* 5. Downsize typography for high-density reading */
+    .car-glass-card h2 {
+        font-size: 1.6rem !important;
+        margin-bottom: 0.5rem !important;
+    }
+
+    .car-details h3 {
+        font-size: 1.1rem !important;
+        margin-bottom: 0.4rem !important;
+    }
+
+    .spec-label {
+        font-weight: bold !important;
+        font-size: 0.75rem !important; /* Micro-sized for crisp UI headers */
+        color: var(--accent-color, #cc0000) !important; 
+        margin-bottom: 1px !important;
+    }
+
+    .spec-value {
+        font-size: 0.8rem !important; /* Scaled down body text */
+        word-break: break-word !important; 
+        white-space: normal !important;
+        line-height: 1.3 !important; /* Tighter line wrapping */
+    }
+
+    /* 6. Ensure the gallery image stays small and neat */
+    .car-gallery {
+        width: 100% !important;
+        margin-top: 0.5rem !important;
+    }
+
+    #car-main-image {
+        width: 100% !important;
+        height: auto !important;
+        border-radius: 6px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* ... your existing mobile styles ... */
+
+    /* 1. Force the grid to fit multiple items cleanly side-by-side on mobile */
+    .sponsors-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; /* Fits 2 sponsor boxes per row instead of stacking huge single boxes */
+        gap: 0.75rem !important; /* Reduces space between sponsor cards */
+        padding: 0.5rem 0 !important;
+    }
+
+    /* 2. Shrink the card containers injected by JS (assuming they use a standard card class name) */
+    .sponsors-grid > div,
+    .sponsor-card,
+    .sponsor-box {
+        padding: 0.75rem !important; /* Compress internal dead space */
+        min-height: auto !important;  /* Stops boxes from being unnecessarily tall */
+        min-width: 0 !important;      /* Overrides desktop min-widths that break layout boundaries */
+    }
+
+    /* 3. Scale down the sponsor logos inside the shrunk grids */
+    .sponsors-grid img {
+        max-height: 50px !important; /* Squeezes down logo heights so they fit the tight boxes */
+        width: auto !important;
+        object-fit: contain !important;
+    }
+
+    /* 4. Tighten up the "Become a Sponsor" form space underneath */
+    .become-sponsor-container {
+        margin-top: 1.5rem !important;
+    }
+
+    .sponsor-form {
+        padding: 1.25rem 1rem !important; /* Shrinks the inner cushion of the form card */
+    }
+
+    .sponsor-form h3 {
+        font-size: 1.2rem !important; /* Ensures header text scales beautifully */
+        margin-bottom: 0.25rem !important;
+    }
+
+    .form-group {
+        margin-bottom: 0.75rem !important; /* Drastically trims down spacing between input boxes */
+    }
+
+    .form-group input, 
+    .form-group textarea {
+        padding: 0.5rem !important; /* Sleeker inputs for easy typing on small viewports */
+        font-size: 0.9rem !important;
+    }
+}
+
+@media (max-width: 768px) {
+    /* ... your other mobile styles ... */
+
+    /* 1. Reset the grid rows to auto-clamp around the newly shrunk logos */
+    .sponsors-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important; 
+        grid-auto-rows: auto !important; /* Forces row heights to fit content perfectly */
+        gap: 0.5rem !important; 
+    }
+
+    /* 2. THE GRID BOX NUKE: Targets ANY element immediately inside the grid */
+    .sponsors-grid > * {
+        height: auto !important;      /* Kills any hardcoded desktop height */
+        max-height: 90px !important;  /* Hard cap to force the boxes to be small */
+        min-height: 0 !important;      /* Kills desktop minimum heights */
+        width: 100% !important;
+        
+        /* Drastically slash padding to crush inner dead space */
+        padding: 0.5rem !important;   
+        margin: 0 !important;
+        
+        /* Ensures anything inside stays perfectly centered vertically and horizontally */
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    /* 3. Ensure the logos scale to match the tight box limits */
+    .sponsors-grid img {
+        max-height: 45px !important;  /* Slightly downsized to fit the 90px box safely */
+        max-width: 100% !important;
+        object-fit: contain !important;
+    }
+}
+

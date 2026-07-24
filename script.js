@@ -1947,12 +1947,21 @@ function redrawTrack(canvas, coordinates, minLat, minLng, maxLat, maxLng, scale,
 // 1. Hero Parallax
 window.addEventListener('scroll', () => {
     const heroContainer = document.querySelector('.parallax-viewport');
-    if (heroContainer) {
+    if (!heroContainer) return;
+
+    // Only run parallax math on screens wider than 768px (Tablets & Desktop)
+    if (window.innerWidth > 768) {
         requestAnimationFrame(() => {
             heroContainer.style.transform = `translate3d(0, ${window.scrollY * 0.8}px, 0)`;
         });
+    } else {
+        // Reset to normal on mobile so it doesn't get stuck if they resize the window
+        requestAnimationFrame(() => {
+            heroContainer.style.transform = `translate3d(0, 0, 0)`;
+        });
     }
 }, { passive: true });
+
 
 // 2. Section Parallax (Highlights, Car, Results)
 const parallaxObserver = new IntersectionObserver((entries) => {
@@ -1962,7 +1971,20 @@ const parallaxObserver = new IntersectionObserver((entries) => {
 
         if (entry.isIntersecting) {
             const handleScroll = () => {
-                // Use offsetTop instead of getBoundingClientRect() to avoid layout thrashing
+                
+                // MOBILE CHECK: If screen is small, lock it in place and skip the math
+                if (window.innerWidth <= 768) {
+                    requestAnimationFrame(() => {
+                        if (targetBg.classList.contains('video-parallax-bg')) {
+                            targetBg.style.transform = `translate3d(0, 0, 0) scaleX(-1)`;
+                        } else {
+                            targetBg.style.transform = `translate3d(0, 0, 0)`;
+                        }
+                    });
+                    return; // Exit the function early
+                }
+
+                // DESKTOP PARALLAX MATH
                 const scrollPos = window.scrollY;
                 const sectionTop = entry.target.offsetTop;
                 const relativePos = scrollPos - sectionTop;
@@ -2051,3 +2073,12 @@ document.addEventListener("DOMContentLoaded", () => {
     allCards.forEach((card) => cardObserver.observe(card));
     
 });
+
+
+// Tell the observer to watch every section that contains a .parallax-bg
+document.querySelectorAll('section').forEach(section => {
+    if (section.querySelector('.parallax-bg')) {
+        genericParallaxObserver.observe(section);
+    }
+});
+
