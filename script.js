@@ -10,13 +10,13 @@ let websiteData = {
     nextRaceDate: null
 };
 
+// Respect the user's motion preference: used to soften or skip animation
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
 
 
 // Initialize website when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Clear storage to force reload of new data structure
-    localStorage.clear();
-    sessionStorage.clear();
     
     // Updated splash screen sequence for smoother, more welcoming experience:
     // 1. Black screen (0.2s) - slightly longer for anticipation
@@ -25,45 +25,65 @@ document.addEventListener('DOMContentLoaded', function() {
     // 4. Fade black away (0.5s) - starting at 1.1s, ending at 1.6s
     // 5. Lower z-index of hero content to go under navigation (at 1.6s)
     
-    // Start logo animation after splash text is fully visible
-    setTimeout(() => {
+    // Reduced motion: skip the timed choreography — gentle cross-fade straight to the page
+    if (prefersReducedMotion.matches) {
         const heroContent = document.querySelector('.hero-content');
         const heroLogo = document.querySelector('.hero-logo');
-        if (heroContent) {
-            heroContent.style.opacity = '1';
-        }
+        if (heroContent) heroContent.style.opacity = '1';
         if (heroLogo) {
-            // Animate logo with welcoming effect
-            setTimeout(() => {
-                heroLogo.style.opacity = '1';
-                heroLogo.style.transform = 'scale(1) translateY(0)';
-            }, 100); // Small delay for smooth transition
+            heroLogo.style.opacity = '1';
+            heroLogo.style.transform = 'scale(1) translateY(0)';
         }
-    }, 500); // Logo starts appearing at 0.5s
-    
-    // Fade out splash screen and adjust z-index
-    setTimeout(() => {
         const splashScreen = document.getElementById('splash-screen');
         if (splashScreen) {
             splashScreen.classList.add('fade-out');
-            // Remove splash screen from DOM after fade transition
             setTimeout(() => {
                 splashScreen.remove();
-                
-                // Lower the z-index of hero content so it goes under the navigation menu
-                const heroContent = document.querySelector('.hero-content');
-                if (heroContent) {
-                    heroContent.style.zIndex = '999';
-                }
-            }, 500);
+                if (heroContent) heroContent.style.zIndex = '999';
+            }, 200);
         }
-    }, 1100); // Start fade out at 1.1s, z-index changes after 1.6s
+    } else {
+        // Start logo animation after splash text is fully visible
+        setTimeout(() => {
+            const heroContent = document.querySelector('.hero-content');
+            const heroLogo = document.querySelector('.hero-logo');
+            if (heroContent) {
+                heroContent.style.opacity = '1';
+            }
+            if (heroLogo) {
+                // Animate logo with welcoming effect
+                setTimeout(() => {
+                    heroLogo.style.opacity = '1';
+                    heroLogo.style.transform = 'scale(1) translateY(0)';
+                }, 100); // Small delay for smooth transition
+            }
+        }, 500); // Logo starts appearing at 0.5s
+        
+        // Fade out splash screen and adjust z-index
+        setTimeout(() => {
+            const splashScreen = document.getElementById('splash-screen');
+            if (splashScreen) {
+                splashScreen.classList.add('fade-out');
+                // Remove splash screen from DOM after fade transition
+                setTimeout(() => {
+                    splashScreen.remove();
+                    
+                    // Lower the z-index of hero content so it goes under the navigation menu
+                    const heroContent = document.querySelector('.hero-content');
+                    if (heroContent) {
+                        heroContent.style.zIndex = '999';
+                    }
+                }, 500);
+            }
+        }, 1100); // Start fade out at 1.1s, z-index changes after 1.6s
+    }
 
     initializeWebsite();
     setupEventListeners();
     loadWebsiteData();
     startCountdown();
     setupScrollAnimations();
+    setupFluidAccordions();
 
     // Initialize track canvases after a delay to ensure DOM is ready
     setTimeout(() => {
@@ -266,7 +286,8 @@ function setupEventListeners() {
     const navMenu = document.getElementById('nav-menu');
     
     navToggle.addEventListener('click', function() {
-        navMenu.classList.toggle('active');
+        const isActive = navMenu.classList.toggle('active');
+        navToggle.classList.toggle('active', isActive);
     });
 
 
@@ -289,9 +310,10 @@ function setupEventListeners() {
             const targetId = this.getAttribute('href').substring(1);
             const targetSection = document.getElementById(targetId);
             if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth' });
+                targetSection.scrollIntoView({ behavior: prefersReducedMotion.matches ? 'auto' : 'smooth' });
                 // Close mobile menu if open
                 navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
             }
         });
     });
@@ -827,6 +849,72 @@ function startCountdown() {
     }, 1000);
 }
 
+// Fluid, interruptible season accordions (Web Animations API).
+// Animating height from its current on-screen value means a mid-flight click
+// reverses cleanly — no "brick wall" (interruptibility). WAAPI uses browser-driven
+// timing, so it animates even where rAF is frozen.
+function setupFluidAccordions() {
+    if (prefersReducedMotion.matches) return; // native <details> instant toggle is the right UX
+    
+    const details = document.querySelectorAll('details.season');
+    details.forEach(detail => {
+        const summary = detail.querySelector('summary');
+        const content = detail.querySelector('.race-content');
+        if (!summary || !content) return;
+        
+        summary.addEventListener('click', (e) => {
+            e.preventDefault();
+            toggleAccordion(detail, content);
+        });
+        // Keyboard parity: Enter / Space on a summary toggles <details> natively
+        summary.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleAccordion(detail, content);
+            }
+        });
+    });
+}
+
+function toggleAccordion(detail, content) {
+    const opening = !detail.open;
+    // Capture the current on-screen height BEFORE cancelling so an interrupt
+    // (e.g. clicking mid-open) reverses smoothly instead of jumping
+    const currentHeight = content.offsetHeight;
+    
+    if (content._accAnim) {
+        content._accAnim.cancel();
+        content._accAnim = null;
+    }
+    
+    let start;
+    let target;
+    
+    if (opening) {
+        detail.open = true;
+        content.style.height = 'auto'; // let the layout size naturally, so scrollHeight measures the full content
+        target = content.scrollHeight;
+        content.style.height = currentHeight + 'px'; // resume from the current value
+        start = currentHeight;
+    } else {
+        start = currentHeight;
+        target = 0;
+    }
+    
+    content.style.overflow = 'hidden';
+    const anim = content.animate(
+        [{ height: start + 'px' }, { height: target + 'px' }],
+        { duration: 400, easing: 'cubic-bezier(0.32, 0.72, 0, 1)', fill: 'both' }
+    );
+    content._accAnim = anim;
+    
+    anim.onfinish = () => {
+        content._accAnim = null;
+        content.style.height = opening ? 'auto' : '0px';
+        if (!opening) detail.open = false;
+    };
+}
+
 // Setup scroll animations
 function setupScrollAnimations() {
     const observerOptions = {
@@ -947,26 +1035,79 @@ function setupSponsorForm() {
     
     if (!becomeSponsorBtn || !sponsorForm || !cancelBtn || !contactForm) return;
     
+    // Fluid, interruptible sheet reveal (Web Animations API): animate from the current
+    // on-screen value so a mid-flight toggle reverses cleanly instead of snapping.
+    function animateForm(open, done) {
+        // Capture current values BEFORE cancelling so an interrupt has no visible jump
+        const wasClosed = open && !sponsorForm._formOpen;
+        const currentHeight = sponsorForm.offsetHeight; // 0 when display:none (fresh open)
+        const currentOpacity = wasClosed ? 0 : (sponsorForm._formOpacity ?? 1);
+        const currentY = wasClosed ? -14 : (sponsorForm._formY ?? 0);
+        
+        if (sponsorForm._formAnim) {
+            sponsorForm._formAnim.cancel();
+            sponsorForm._formAnim = null;
+        }
+        
+        if (open) {
+            sponsorForm.style.display = 'block';
+            // Measure the fully-open height without flashing it
+            sponsorForm.style.visibility = 'hidden';
+        }
+        
+        const targetHeight = open ? sponsorForm.scrollHeight : 0;
+        
+        if (open) sponsorForm.style.visibility = '';
+        sponsorForm.style.overflow = 'hidden';
+        
+        const anim = sponsorForm.animate(
+            [
+                { height: currentHeight + 'px', opacity: currentOpacity, transform: `translateY(${currentY}px)` },
+                { height: targetHeight + 'px', opacity: open ? 1 : 0, transform: 'translateY(0px)' }
+            ],
+            { duration: 350, easing: 'cubic-bezier(0.32, 0.72, 0, 1)', fill: 'both' }
+        );
+        sponsorForm._formAnim = anim;
+        
+        anim.onfinish = () => {
+            sponsorForm._formAnim = null;
+            sponsorForm.style.height = open ? 'auto' : '0px';
+            sponsorForm.style.overflow = open ? '' : 'hidden';
+            sponsorForm.style.opacity = open ? '1' : '0';
+            sponsorForm._formOpacity = open ? 1 : 0;
+            sponsorForm._formY = 0;
+            sponsorForm._formOpen = open;
+            if (!open) sponsorForm.style.display = 'none';
+            if (done) done();
+        };
+    }
+    
+    function openSponsorForm() {
+        becomeSponsorBtn.classList.add('active');
+        animateForm(true, () => {
+            sponsorForm.scrollIntoView({ behavior: prefersReducedMotion.matches ? 'auto' : 'smooth', block: 'center' });
+        });
+    }
+    
+    function closeSponsorForm(reset) {
+        becomeSponsorBtn.classList.remove('active');
+        animateForm(false, () => {
+            if (reset) contactForm.reset();
+        });
+    }
+    
     // Toggle form visibility
     becomeSponsorBtn.addEventListener('click', function() {
-        const isVisible = sponsorForm.style.display !== 'none';
-        
-        if (isVisible) {
-            sponsorForm.style.display = 'none';
-            becomeSponsorBtn.classList.remove('active');
+        if (sponsorForm._formOpen) {
+            closeSponsorForm(false);
         } else {
-            sponsorForm.style.display = 'block';
-            becomeSponsorBtn.classList.add('active');
-            // Smooth scroll to form
-            sponsorForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            openSponsorForm();
         }
     });
     
     // Cancel button
     cancelBtn.addEventListener('click', function() {
-        sponsorForm.style.display = 'none';
-        becomeSponsorBtn.classList.remove('active');
-        contactForm.reset();
+        closeSponsorForm(true);
     });
     
     // Handle form submission
@@ -1009,8 +1150,7 @@ function setupSponsorForm() {
                 // Success
                 showNotification('Message sent successfully! We\'ll get back to you soon.', 'success');
                 contactForm.reset();
-                sponsorForm.style.display = 'none';
-                becomeSponsorBtn.classList.remove('active');
+                closeSponsorForm(false);
             } else {
                 throw new Error('Failed to send message');
             }
@@ -1125,6 +1265,17 @@ function setupVinhEasterEgg(card, originalImage) {
 // Setup digital counter animations
 function setupDigitalCounters() {
     const counters = document.querySelectorAll('.counter-number');
+    if (counters.length === 0) return;
+    
+    // Reduced motion: show the final values immediately
+    if (prefersReducedMotion.matches) {
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            counter.textContent = target === 250 ? '250+' : target;
+        });
+        return;
+    }
+    
     const animationOrder = [1, 5, 16, 250, 33]; // Order we want them to animate
     let currentAnimationIndex = 0;
     let animationStarted = false;
@@ -1132,13 +1283,17 @@ function setupDigitalCounters() {
     counters.forEach((counter) => {
         const target = parseInt(counter.getAttribute('data-target'));
         const duration = 1200; // 1.2 seconds (reduced from 2 seconds)
-        const increment = target / (duration / 16); // 60fps
-        let current = 0;
+        let startTime = null;
         
-        const updateCounter = () => {
-            current += increment;
-            if (current < target) {
-                counter.textContent = Math.floor(current);
+        const updateCounter = (timestamp) => {
+            const now = timestamp || performance.now();
+            if (startTime === null) startTime = now;
+            const elapsed = now - startTime;
+            const progress = Math.min(1, elapsed / duration);
+            const eased = 1 - Math.pow(1 - progress, 3); // easeOutCubic: decelerate into place
+            counter.textContent = Math.floor(target * eased);
+            
+            if (progress < 1) {
                 requestAnimationFrame(updateCounter);
             } else {
                 // Special case for hours racing - show 250+ at the end
@@ -1737,6 +1892,24 @@ function startTrackAnimation(canvas) {
     const { totalDistance, segmentDistances, canvasCoordinates } = canvas._animDistance;
     console.log(`${trackType}: Lap time ${lapTimeSeconds}s, total distance: ${totalDistance.toFixed(2)}px`);
     
+    // Reduced motion: draw the track once with a static dot at the start line
+    if (prefersReducedMotion.matches) {
+        redrawTrack(canvas, coordinates, minLat, minLng, maxLat, maxLng, scale, offsetX, offsetY, width, height);
+        const startPoint = canvasCoordinates[0];
+        if (startPoint) {
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = '#ff0000';
+            ctx.beginPath();
+            ctx.arc(startPoint.x, startPoint.y, dotRadius, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.shadowColor = '#ff0000';
+            ctx.shadowBlur = 10;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+        return;
+    }
+    
     let lastTime = performance.now();
     
     function animate(currentTime) {
@@ -1946,6 +2119,8 @@ function redrawTrack(canvas, coordinates, minLat, minLng, maxLat, maxLng, scale,
 
 // 1. Hero Parallax
 window.addEventListener('scroll', () => {
+    if (prefersReducedMotion.matches) return;
+
     const heroContainer = document.querySelector('.parallax-viewport');
     if (!heroContainer) return;
 
@@ -1971,7 +2146,9 @@ const parallaxObserver = new IntersectionObserver((entries) => {
 
         if (entry.isIntersecting) {
             const handleScroll = () => {
-                
+                // Reduced motion: lock the background in place
+                if (prefersReducedMotion.matches) return;
+
                 // MOBILE CHECK: If screen is small, lock it in place and skip the math
                 if (window.innerWidth <= 768) {
                     requestAnimationFrame(() => {
@@ -2075,10 +2252,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
-// Tell the observer to watch every section that contains a .parallax-bg
-document.querySelectorAll('section').forEach(section => {
-    if (section.querySelector('.parallax-bg')) {
-        genericParallaxObserver.observe(section);
-    }
-});
+
 

@@ -127,6 +127,9 @@ body {
     background-color: var(--bg-color);
     color: var(--text-color);
     transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
 }
 
 .container {
@@ -141,6 +144,18 @@ h1, h2, h3, h4, h5, h6 {
     font-family: 'Orbitron', monospace;
     font-weight: 700;
     margin-bottom: 1rem;
+    font-optical-sizing: auto;
+}
+
+/* Size-specific tracking & leading: tighten as type grows, loosen as it shrinks */
+h1, h2, .section-title {
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+h3, h4 {
+    letter-spacing: -0.01em;
+    line-height: 1.3;
 }
 
 h1 { font-size: 3.5rem; }
@@ -420,8 +435,8 @@ h4 { font-size: 1.5rem; }
     /* Soft rounded corners on the bottom */
     border-radius: 0 0 20px 20px; 
     
-    /* Smoothly animates the transition when you start scrolling */
-    transition: all 0.4s ease; 
+    /* Smoothly animates the transition when you start scrolling (scoped: only the material changes) */
+    transition: background-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
 }
 
 /* --- The Scrolled State (Glass Only) --- */
@@ -489,7 +504,7 @@ h4 { font-size: 1.5rem; }
     font-weight: 500;
     font-family: 'Roboto', sans-serif;
     font-size: 1rem;
-    transition: color 0.3s ease;
+    transition: color 0.3s ease, transform 0.3s ease;
     position: relative;
 }
 
@@ -518,6 +533,19 @@ h4 { font-size: 1.5rem; }
     display: none;
     flex-direction: column;
     cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.nav-toggle.active .bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-toggle.active .bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
 }
 
 .bar {
@@ -525,7 +553,7 @@ h4 { font-size: 1.5rem; }
     height: 3px;
     background: white;
     margin: 3px 0;
-    transition: 0.3s;
+    transition: transform 0.25s ease, opacity 0.25s ease;
 }
 
 
@@ -621,7 +649,7 @@ h4 { font-size: 1.5rem; }
     
     opacity: 0;
     transform: scale(0.9) translateY(20px);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 999;
     position: relative;
 }
@@ -1030,7 +1058,7 @@ section h2 {
     background: var(--card-bg);
     border-radius: 5px;
     border: 1px solid var(--secondary-color);
-    transition: background-color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.3s ease;
 }
 
 .race-item:hover {
@@ -2040,20 +2068,26 @@ section h2 {
 @media (max-width: 1024px) {
     .nav-menu {
         position: fixed;
-        left: -100%;
+        left: 0;
         top: 70px;
+        transform: translateX(-100%);
         flex-direction: column;
-        background-color: rgba(0, 0, 0, 0.95);
+        background-color: rgba(11, 12, 15, 0.85);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
         width: 100%;
         text-align: center;
-        transition: 0.3s;
+        transition: transform 0.35s cubic-bezier(0.32, 0.72, 0, 1), background-color 0.3s ease;
         padding: 2rem 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+        will-change: transform;
     }
 
 
 
     .nav-menu.active {
-        left: 0;
+        transform: translateX(0);
     }
 
     .nav-toggle {
@@ -2281,7 +2315,7 @@ section h2 {
 
 .hero {
     position: relative;
-    background-image: url('E:/NummiRacing-main (2)/NummiRacing-main/NummiRacing-main/images/hero-bg2-web.jpg');
+    background-image: url('images/hero-bg2-web.jpg');
     background-size: cover;
     background-position: center;
     overflow: hidden;
@@ -2835,8 +2869,28 @@ details[open] summary::after {
 }
 
 /* --- The Content Inside --- */
+/* Height is animated by JS via the Web Animations API (fluid accordion);
+   overflow clips the sliding content while it animates. */
 .race-content {
-    padding: 0 1.5rem 1.5rem 1.5rem; 
+    overflow: hidden;
+    padding: 0;
+    border-top: none;
+    height: 0;
+}
+
+details[open] .race-content {
+    height: auto;
+}
+
+.race-content > .season {
+    overflow: hidden;
+    min-height: 0;
+    margin-bottom: 0;
+}
+
+.race-content > .season .results-grid {
+    /* 1.5rem original padding + 3rem original margin, folded into padding so it clips when closed */
+    padding: 0 1.5rem 4.5rem 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.05); /* Adds a subtle line between the title and the content */
 }
 
@@ -2980,7 +3034,7 @@ details[open] .race-content {
     /* Main Hero Title */
     h1 {
         font-size: 2.5rem !important; 
-        letter-spacing: 1px !important;
+        letter-spacing: -0.02em !important; /* negative tracking on large display text */
     }
 
     /* Section Headers (like "Results", "Connect", "About") */
@@ -3184,6 +3238,73 @@ details[open] .race-content {
         max-height: 45px !important;  /* Slightly downsized to fit the 90px box safely */
         max-width: 100% !important;
         object-fit: contain !important;
+    }
+}
+
+/* --- Press Feedback: respond on pointer-down, not on release --- */
+.btn:active,
+.become-sponsor-btn:active,
+.filter-btn:active,
+.connect-btn:active,
+.race-item:active {
+    transform: scale(0.97);
+    transition: transform 100ms ease-out;
+}
+
+.nav-toggle:active {
+    transform: scale(0.94);
+    transition: transform 100ms ease-out;
+}
+
+.nav-link:active,
+.instagram-link:active {
+    transform: scale(0.96);
+    transition: transform 100ms ease-out;
+}
+
+summary:active h3 {
+    transform: scale(0.97);
+    transition: transform 100ms ease-out;
+}
+
+/* --- Reduced Motion: gentler, non-vestibular equivalents --- */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+
+    /* Scroll reveals start fully visible — no entrance motion */
+    .fade-in, .slide-in-left, .slide-in-right,
+    .result-card, .result-card.show {
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    /* Parallax locked in place */
+    .parallax-viewport, .hero-background,
+    .video-parallax-bg, .car-parallax-bg,
+    .results-parallax-bg, .parallax-bg {
+        transform: none !important;
+    }
+}
+
+/* --- Reduced Transparency: frostier, more solid materials --- */
+@media (prefers-reduced-transparency: reduce) {
+    .navbar.scrolled,
+    .video-glass-card,
+    .car-glass-card,
+    .premium-glass-card,
+    .hero-content,
+    .season h3 {
+        background: rgba(11, 12, 15, 0.97) !important;
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
     }
 }
 
