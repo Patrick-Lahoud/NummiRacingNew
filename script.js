@@ -10,6 +10,11 @@ let websiteData = {
     nextRaceDate: null
 };
 
+// Bump this whenever the default content in loadDefaultData() changes. A saved
+// copy in localStorage is only trusted when it was written by the same version,
+// so editing the schedule here actually reaches returning visitors.
+const CONTENT_VERSION = '2027-thunderhill-2';
+
 // Respect the user's motion preference: used to soften or skip animation
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
@@ -93,11 +98,26 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Initialize website components
 function initializeWebsite() {
-    // Load data from localStorage or use default data
+    // Load data from localStorage or use the defaults baked into this build.
+    // A saved copy is only trusted when it was written by the same content
+    // version: otherwise a returning visitor keeps seeing old races after the
+    // site is updated, because the saved copy always won.
     const savedData = localStorage.getItem('nummiRacingData');
+    let savedIsCurrent = false;
+
     if (savedData) {
+        try {
+            const parsed = JSON.parse(savedData);
+            savedIsCurrent = !!parsed && parsed.contentVersion === CONTENT_VERSION;
+        } catch (e) {
+            savedIsCurrent = false;
+        }
+    }
+
+    if (savedIsCurrent) {
         websiteData = JSON.parse(savedData);
     } else {
+        localStorage.removeItem('nummiRacingData');
         loadDefaultData();
     }
     
@@ -159,14 +179,6 @@ function loadDefaultData() {
                 instagram: "heavymanufacturing"
             },
             {
-                id: 5,
-                name: "Jason Li",
-                role: "Guest Driver",
-                image: "images/jason.jpg",
-                bio: "",
-                instagram: "driven.by.jay"
-            },
-            {
                 id: 6,
                 name: "Paul Joakim",
                 role: "Guest Driver", 
@@ -179,7 +191,7 @@ function loadDefaultData() {
             {
                 id: 1,
                 name: "Adam Mann",
-                role: "Technical Director",
+                role: "Crew Chief and Technical Director",
                 image: "images/adam.jpg?v=3",
                 bio: "Tinkering with cars from a small age, Adam has been building winning race cars for over a decade. Father of two girls and Tech Support in the Product Quality area of Toyota Canada Inc. Adam has a busy schedule ensuring all things run smoothly at nummi racing. With decades of experience as a technician and shop foreman, Adam's prowess turning wrenches and problem solving are key to the wisdom gained on the 86 chassis. An agile and straight forward thinker, Adam's no stranger to tough motorsport challenges. He enjoys endurance and sportscar racing while relaxing by the campfire. Adam daily drives a Toyota Tundra & Toyota Prius PHEV.",
                 instagram: "mann.motorsport"
@@ -196,19 +208,11 @@ function loadDefaultData() {
         schedule: [
             {
                 id: 1,
-                date: "2025-09-26T13:00:00",
-                location: "Shannonville Motorsports Park",
-                event: "Enduro Elite Race 8",
+                date: "2027-04-02",
+                location: "Thunderhill Raceway Park, Willows, CA",
+                event: "WRL 25 Hours of Thunderhill",
                 status: "upcoming",
-                link: "https://enduroelite.ca/schedule"
-            },
-            {
-                id: 2,
-                date: "2025-11-15T12:00:00",
-                location: "Ozarks International Raceway",
-                event: "NASA 25hrs of Ozarks",
-                status: "upcoming",
-                link: "https://drivenasa.com/25-hour/"
+                link: "https://www.racewrl.com/thunderhill27"
             }
         ],
         gallery: [],
@@ -270,7 +274,11 @@ function loadDefaultData() {
             email: "mailto:nummi.racing45@gmail.com"
         }
     };
-    
+
+    // Stamp the saved copy with the version it came from, so the next content
+    // update invalidates it instead of being hidden behind it.
+    websiteData.contentVersion = CONTENT_VERSION;
+
     saveWebsiteData();
 }
 
@@ -285,9 +293,41 @@ function setupEventListeners() {
     const navToggle = document.getElementById('nav-toggle');
     const navMenu = document.getElementById('nav-menu');
     
+    navToggle.setAttribute('aria-expanded', 'false');
+
+    // Single place that opens and closes the dropdown, so the bar always knows
+    // whether its bottom edge has to stay square and painted like the panel.
+    function setMobileMenu(open) {
+        navMenu.classList.toggle('active', open);
+        navToggle.classList.toggle('active', open);
+        navToggle.setAttribute('aria-expanded', String(open));
+        const navbar = document.querySelector('.navbar');
+        if (navbar) navbar.classList.toggle('menu-open', open);
+    }
+
     navToggle.addEventListener('click', function() {
-        const isActive = navMenu.classList.toggle('active');
-        navToggle.classList.toggle('active', isActive);
+        setMobileMenu(!navMenu.classList.contains('active'));
+    });
+
+    // Keyboard activation, since the toggle is a div rather than a button
+    navToggle.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            navToggle.click();
+        }
+    });
+
+    // Tapping anywhere outside the dropdown closes it
+    document.addEventListener('click', function(e) {
+        if (!navMenu.classList.contains('active')) return;
+        if (navMenu.contains(e.target) || navToggle.contains(e.target)) return;
+        setMobileMenu(false);
+    });
+
+    // Escape closes it as well
+    document.addEventListener('keydown', function(e) {
+        if (e.key !== 'Escape' || !navMenu.classList.contains('active')) return;
+        setMobileMenu(false);
     });
 
 
@@ -312,8 +352,7 @@ function setupEventListeners() {
             if (targetSection) {
                 targetSection.scrollIntoView({ behavior: prefersReducedMotion.matches ? 'auto' : 'smooth' });
                 // Close mobile menu if open
-                navMenu.classList.remove('active');
-                navToggle.classList.remove('active');
+                setMobileMenu(false);
             }
         });
     });
@@ -938,15 +977,21 @@ function setupScrollAnimations() {
 
 // Utility functions
 function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
+    // Entries can be a bare date ("2027-04-02") when only the day is known, in
+    // which case showing a made-up start time would be worse than showing none.
+    const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(dateString);
+    const date = new Date(dateOnly ? `${dateString}T12:00:00` : dateString);
+    const options = {
         weekday: 'long',
         year: 'numeric',
         month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
+        day: 'numeric'
+    };
+    if (!dateOnly) {
+        options.hour = '2-digit';
+        options.minute = '2-digit';
+    }
+    return date.toLocaleDateString('en-US', options);
 }
 
 function getResultClass(result) {
@@ -1002,12 +1047,16 @@ function loadWebsiteData() {
 
 // Handle window resize for responsive design
 window.addEventListener('resize', function() {
-    // Close mobile menu if screen becomes large
-    if (window.innerWidth > 768) {
-        document.getElementById('nav-menu').classList.remove('active');
+    // Close the mobile dropdown once the screen grows past the mobile breakpoint
+    if (window.innerWidth > 1024) {
+        const navMenu = document.getElementById('nav-menu');
+        const navToggle = document.getElementById('nav-toggle');
+        const navbar = document.querySelector('.navbar');
+        navMenu.classList.remove('active');
+        navToggle.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+        if (navbar) navbar.classList.remove('menu-open');
     }
-    
-
 });
 
 // Add loading states for better UX
@@ -2114,82 +2163,10 @@ function redrawTrack(canvas, coordinates, minLat, minLng, maxLat, maxLng, scale,
     }
 }
 
-// --- High-Performance Parallax Observer (Speed: 0.8) ---
-// --- Jitter-Free Optimized Parallax Controller ---
-
-// 1. Hero Parallax
-window.addEventListener('scroll', () => {
-    if (prefersReducedMotion.matches) return;
-
-    const heroContainer = document.querySelector('.parallax-viewport');
-    if (!heroContainer) return;
-
-    // Only run parallax math on screens wider than 768px (Tablets & Desktop)
-    if (window.innerWidth > 768) {
-        requestAnimationFrame(() => {
-            heroContainer.style.transform = `translate3d(0, ${window.scrollY * 0.8}px, 0)`;
-        });
-    } else {
-        // Reset to normal on mobile so it doesn't get stuck if they resize the window
-        requestAnimationFrame(() => {
-            heroContainer.style.transform = `translate3d(0, 0, 0)`;
-        });
-    }
-}, { passive: true });
-
-
-// 2. Section Parallax (Highlights, Car, Results)
-const parallaxObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        const targetBg = entry.target.querySelector('.video-parallax-bg, .car-parallax-bg, .results-parallax-bg');
-        if (!targetBg) return;
-
-        if (entry.isIntersecting) {
-            const handleScroll = () => {
-                // Reduced motion: lock the background in place
-                if (prefersReducedMotion.matches) return;
-
-                // MOBILE CHECK: If screen is small, lock it in place and skip the math
-                if (window.innerWidth <= 768) {
-                    requestAnimationFrame(() => {
-                        if (targetBg.classList.contains('video-parallax-bg')) {
-                            targetBg.style.transform = `translate3d(0, 0, 0) scaleX(-1)`;
-                        } else {
-                            targetBg.style.transform = `translate3d(0, 0, 0)`;
-                        }
-                    });
-                    return; // Exit the function early
-                }
-
-                // DESKTOP PARALLAX MATH
-                const scrollPos = window.scrollY;
-                const sectionTop = entry.target.offsetTop;
-                const relativePos = scrollPos - sectionTop;
-
-                requestAnimationFrame(() => {
-                    if (targetBg.classList.contains('video-parallax-bg')) {
-                        targetBg.style.transform = `translate3d(0, ${relativePos * 0.8}px, 0) scaleX(-1)`;
-                    } else {
-                        targetBg.style.transform = `translate3d(0, ${relativePos * 0.8}px, 0)`;
-                    }
-                });
-            };
-
-            window.addEventListener('scroll', handleScroll, { passive: true });
-            entry.target._parallaxScrollHandler = handleScroll;
-        } else {
-            if (entry.target._parallaxScrollHandler) {
-                window.removeEventListener('scroll', entry.target._parallaxScrollHandler);
-            }
-        }
-    });
-}, { threshold: 0 });
-
-// Observe all your sections
-['highlights', 'car', 'results'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) parallaxObserver.observe(el);
-});
+// --- Parallax backgrounds ---
+// Every parallax layer (hero, Our Story, The Car, Results) is now a plain CSS
+// background with `background-attachment: fixed`, so no scroll handlers are
+// needed — the browser keeps the image fixed to the viewport for us.
 // --- Cascade Reveal Observer ---
 const cardObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {

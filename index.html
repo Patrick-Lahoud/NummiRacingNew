@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nummi Racing - Amateur Endurance Racing Team</title>
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="stylesheet" href="styles.css?v=3.9">
+    <link rel="stylesheet" href="styles.css?v=4.12">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" media="print" onload="this.media='all'">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
     <link href="https://fonts.cdnfonts.com/css/vag-rounded" rel="stylesheet" media="print" onload="this.media='all'">
@@ -51,7 +51,7 @@
             <a href="#sponsors" class="nav-link">Sponsors</a>
             <a href="#contact" class="nav-link">Connect</a>
             </div>
-            <div class="nav-toggle" id="nav-toggle">
+            <div class="nav-toggle" id="nav-toggle" role="button" tabindex="0" aria-label="Toggle navigation menu" aria-controls="nav-menu" aria-expanded="false">
                 <span class="bar"></span>
                 <span class="bar"></span>
                 <span class="bar"></span>
@@ -62,7 +62,7 @@
     <!-- Hero Section -->
     <section id="home" class="hero">
     <div class="parallax-viewport">
-        <img src="images/hero-bg2-web.jpg" class="hero-background" alt="Hero Background Image">
+        <div class="hero-background" role="img" aria-label="Hero Background Image"></div>
     </div>
 
     <div class="hero-content">
@@ -347,7 +347,7 @@
                     <div class="season-divider"></div>
 
                     <details class="season" open>
-                        <summary><h3>2026 Championship</span><span class="season-dash"> - </span><span class="season-position silver">TBD</span></h3></summary>
+                        <summary><h3>2026 Championship</span><span class="season-dash"> - </span><span class="season-position">4th</span></h3></summary>
                         <div class="race-content">
                     
                     <div class="season">
@@ -873,7 +873,7 @@
     <p>Website made by <a href="https://github.com/Patrick-Lahoud" target="_blank" rel="noopener">Patrick Lahoud</a></p>
 </div>
 
-    <script src="script.js?v=3.9"></script>
+    <script src="script.js?v=4.7"></script>
 
  
 </body>
