@@ -3551,3 +3551,30 @@ summary:active h3 {
         font-size: 0.75rem !important;
     }
 }
+
+/* --- Parallax on phones and touch screens --- */
+/* background-attachment: fixed sizes the photo against the viewport — and on
+   iOS Safari against the whole document — so a landscape shot inside a tall
+   phone screen was magnified many times over ("super zoomed in"). Touch and
+   narrow screens fall back to element-sized cover, which is the framing the
+   original <img> had, and each photo keeps its focal point. */
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
+    .hero-background,
+    .video-parallax-bg,
+    .car-parallax-bg,
+    .parallax-bg {
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+    }
+
+    .hero-background {
+        background-position: 67.2% 61.9%;
+    }
+
+    .video-parallax-bg,
+    .car-parallax-bg,
+    .parallax-bg {
+        background-position: center center;
+    }
+}
