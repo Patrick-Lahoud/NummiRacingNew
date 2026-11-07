@@ -2168,22 +2168,7 @@ function redrawTrack(canvas, coordinates, minLat, minLng, maxLat, maxLng, scale,
 // touch screens each photo is a `position: fixed` layer clipped by its own
 // section, so it stays perfectly still while the page scrolls over it. No
 // scroll handler means it cannot fall behind momentum scrolling.
-// --- Cascade Reveal Observer ---
-const cardObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        // If the card scrolls into view, add the visibility class
-        if (entry.isIntersecting) {
-            entry.target.classList.add('is-visible');
-            // Stop watching it once it's revealed to save performance
-            cardObserver.unobserve(entry.target); 
-        }
-    });
-}, { threshold: 0.15 }); // Triggers when 15% of the card is visible
-
-// Attach the watcher to every single result card automatically
-document.querySelectorAll('.result-card').forEach(card => {
-    cardObserver.observe(card);
-});
+// Result cards are visible as soon as they are in the DOM: no scroll reveal.
 
 // --- Navbar Glass & Glow Scroll Effect ---
 const navbar = document.querySelector('.navbar');
@@ -2198,36 +2183,8 @@ window.addEventListener('scroll', () => {
     }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-    
-    // 1. Auto-Calculate the Delay for ANY amount of cards
-    const allCards = document.querySelectorAll('.result-card');
-    
-    allCards.forEach((card) => {
-        // This dynamically finds the card's exact position (0, 1, 2, 3...) inside its parent container
-        const index = Array.from(card.parentNode.children).indexOf(card);
-        
-        // Applies a 0.1s, 0.2s, etc. delay based on that position
-        card.style.transitionDelay = `${index * 0.1}s`;
-    });
+// (result cards no longer fade in on scroll)
 
-    // 2. The Camera (Observer)
-    const cardObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('show');
-            } else {
-                entry.target.classList.remove('show');
-            }
-        });
-    }, {
-        threshold: 0.1 
-    });
-
-    // 3. Watch the cards
-    allCards.forEach((card) => cardObserver.observe(card));
-    
-});
 
 
 

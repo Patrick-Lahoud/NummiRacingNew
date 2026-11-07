@@ -2847,18 +2847,10 @@ section {
     transition: all 0.3s ease;
 }
 
-/* --- Cascade Reveal Starting State --- */
-/* 1. The Starting State (Hidden) */
+/* --- Race result cards are simply there: no fade, no drift, no stagger --- */
 .result-card {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-/* 2. The Triggered State (Visible) */
-.result-card.show {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
 }
 
 /* --- Forcefully Hide Scrollbar --- */
@@ -3625,4 +3617,13 @@ summary:active h3 {
         background-repeat: no-repeat !important;
         will-change: auto;
     }
+}
+
+/* --- Race grid: no dead space under the last row --- */
+/* The rule above folded the old 3rem margin into padding, leaving 4.5rem of
+   empty panel below the final row, plus the grid's own 2rem margin. Both are
+   pulled back so the open season ends just under its cards. */
+.race-content > .season .results-grid {
+    margin-bottom: 0;
+    padding: 0 1.5rem 1.5rem 1.5rem;
 }
