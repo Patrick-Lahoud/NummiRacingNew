@@ -3658,3 +3658,38 @@ summary:active h3 {
         font-size: 0.68rem !important;
     }
 }
+
+/* --- Bigger video player on phones --- */
+/* The player was boxed in twice: 2rem of section padding and 1.5rem of card
+   padding left it at ~64% of the screen width. Both are pulled in so the video
+   takes almost the full width, while the card keeps a slim frame around it. */
+@media (max-width: 768px) {
+    .video-parallax-section {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+
+    .video-glass-card {
+        padding: 1.25rem 0.75rem;
+        border-radius: 18px;
+    }
+
+    .iframe-player-container {
+        border-radius: 10px;
+    }
+
+    .video-text-container {
+        padding: 0 0.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-parallax-section {
+        padding-left: 0.25rem;
+        padding-right: 0.25rem;
+    }
+
+    .video-glass-card {
+        padding: 1rem 0.5rem;
+    }
+}
