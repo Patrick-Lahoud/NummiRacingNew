@@ -3593,3 +3593,36 @@ summary:active h3 {
         transform: translate3d(0, 0, 0);
     }
 }
+
+/* --- Touch screens: genuinely fixed backgrounds --- */
+/* `background-attachment: fixed` is mis-sized on phones, and pinning the layer
+   from a scroll handler makes it trail behind momentum scrolling (it looks like
+   a slow parallax instead of a still photo). On touch screens each photo is
+   therefore a real `position: fixed` layer, which the compositor keeps still
+   without any JavaScript, and its section clips it with clip-path so it only
+   shows through that section. Desktop is untouched. */
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
+    .hero,
+    .video-parallax-section,
+    .car-parallax-section,
+    .results-section {
+        clip-path: inset(0);
+    }
+
+    .hero-background,
+    .video-parallax-bg,
+    .car-parallax-bg,
+    .parallax-bg {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100vh !important;
+        max-height: none !important;
+        transform: none !important;
+        background-attachment: scroll !important;
+        background-size: cover !important;
+        background-repeat: no-repeat !important;
+        will-change: auto;
+    }
+}
