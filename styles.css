@@ -3578,3 +3578,18 @@ summary:active h3 {
         background-position: center center;
     }
 }
+
+/* --- Script-pinned parallax layers on touch screens --- */
+/* The script in script.js measures each layer and keeps its top edge on the
+   viewport's top edge, which reproduces `background-attachment: fixed` without
+   the mobile sizing bug. These are the starting values it replaces on load. */
+@media (max-width: 768px), (hover: none) and (pointer: coarse) {
+    .hero-background,
+    .video-parallax-bg,
+    .car-parallax-bg,
+    .parallax-bg {
+        height: 100vh;
+        will-change: transform;
+        transform: translate3d(0, 0, 0);
+    }
+}

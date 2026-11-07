@@ -2164,9 +2164,109 @@ function redrawTrack(canvas, coordinates, minLat, minLng, maxLat, maxLng, scale,
 }
 
 // --- Parallax backgrounds ---
-// Every parallax layer (hero, Our Story, The Car, Results) is now a plain CSS
-// background with `background-attachment: fixed`, so no scroll handlers are
-// needed — the browser keeps the image fixed to the viewport for us.
+// Desktop keeps the pure-CSS version (`background-attachment: fixed`), so no
+// scroll handler runs there. Phones and touch screens cannot use it: iOS Safari
+// and several Android browsers size a fixed background against the document
+// instead of the viewport, which blows the photo up enormously. There the layers
+// are pinned by script instead — each one is exactly viewport-sized and keeps
+// its top edge on the viewport's top edge, which looks identical to `fixed`,
+// and the section's own overflow clips whatever hangs outside it.
+(function mobileParallax() {
+    const layerPairs = [
+        ['.hero', '.hero-background'],
+        ['.video-parallax-section', '.video-parallax-bg'],
+        ['.car-parallax-section', '.car-parallax-bg'],
+        ['.results-section', '.parallax-bg']
+    ];
+
+    const touchQuery = window.matchMedia('(max-width: 768px), (hover: none) and (pointer: coarse)');
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const layers = layerPairs.map(([sectionSelector, layerSelector]) => {
+        const section = document.querySelector(sectionSelector);
+        const layer = document.querySelector(layerSelector);
+        return section && layer ? { section, layer } : null;
+    }).filter(Boolean);
+
+    let frame = 0;
+    let running = false;
+
+    function measure() {
+        const height = window.innerHeight;
+        layers.forEach(({ layer }) => {
+            layer.style.height = height + 'px';
+        });
+    }
+
+    function paint() {
+        frame = 0;
+        layers.forEach(({ section, layer }) => {
+            const rect = section.getBoundingClientRect();
+            if (rect.bottom < -400 || rect.top > window.innerHeight + 400) {
+                return; // entirely off screen, nothing to place
+            }
+            layer.style.transform = 'translate3d(0,' + Math.round(-rect.top) + 'px,0)';
+        });
+    }
+
+    function queuePaint() {
+        if (!frame) {
+            frame = window.requestAnimationFrame(paint);
+        }
+    }
+
+    function onResize() {
+        measure();
+        paint();
+    }
+
+    function enable() {
+        if (running) return;
+        running = true;
+        measure();
+        paint();
+        window.addEventListener('scroll', queuePaint, { passive: true });
+        window.addEventListener('resize', onResize);
+        window.addEventListener('orientationchange', onResize);
+    }
+
+    function disable() {
+        if (!running) return;
+        running = false;
+        window.removeEventListener('scroll', queuePaint);
+        window.removeEventListener('resize', onResize);
+        window.removeEventListener('orientationchange', onResize);
+        if (frame) {
+            window.cancelAnimationFrame(frame);
+            frame = 0;
+        }
+        layers.forEach(({ layer }) => {
+            layer.style.height = '';
+            layer.style.transform = '';
+        });
+    }
+
+    function sync() {
+        if (touchQuery.matches && !reducedMotion.matches) {
+            enable();
+        } else {
+            disable();
+        }
+    }
+
+    function watch(query, handler) {
+        if (typeof query.addEventListener === 'function') {
+            query.addEventListener('change', handler);
+        } else if (typeof query.addListener === 'function') {
+            query.addListener(handler);
+        }
+    }
+
+    sync();
+    watch(touchQuery, sync);
+    watch(reducedMotion, sync);
+    window.addEventListener('load', sync);
+})();
 // --- Cascade Reveal Observer ---
 const cardObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
